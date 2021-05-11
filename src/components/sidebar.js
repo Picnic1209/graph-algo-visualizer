@@ -19,9 +19,23 @@ function Sidebar({ currentState, setCurrentState }) {
             cursor.style.display = "block";
         }
     };
+
+    const addEdgeButtHandler = (e) => {
+        e.preventDefault();
+        let butt = document.querySelector(".addEdgeButt");
+        if(currentState==="creatingEdge") {
+            setCurrentState("idle");
+            butt.innerHTML = "Add Edge";
+        }
+        else {
+            setCurrentState("creatingEdge");
+            butt.innerHTML = "Stop Adding Edge";
+        }
+    };
     return (
         <div className="sidebarRoot">
             <button className="addNodeButt" onClick={addNodeButtHandler}> Add Node </button>
+            <button className="addEdgeButt" onClick={addEdgeButtHandler}> Add Edge </button>
         </div>
     );
 }
