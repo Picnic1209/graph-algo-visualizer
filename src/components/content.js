@@ -36,10 +36,13 @@ function Content({
             }
         }
 
-        if(alreadyPresent===1)return;
-        currEdgeCount++;
+        if(alreadyPresent===1){
+            return;
+        }
 
-        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: currEdgeCount }]);
+        currEdgeCount = currEdgeCount+1;
+
+        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: edgeList.length + 1}]);
         console.log("Edge drawn");
         return;
     }
@@ -97,7 +100,7 @@ function Content({
             <div key={node.id} className="node" style={{top:node.posY-15, left:node.posX-15}}>{node.id}</div>
             )}
             {edgeList.map((edge)=>
-            <Line zIndex={-5} borderColor="black" borderWidth={3} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
+            <Line key={edge.id} zIndex={-5} borderColor="black" borderWidth={3} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
             )}
             <div className="cursor"></div>
         </div>
