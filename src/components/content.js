@@ -11,6 +11,7 @@ function Content({
     setEdgeList,
 }) {
     let foundNode1 = -1;
+    let currEdgeCount = 0;
 
     function isNear(currNode, x, y) {
         let distance = (x - currNode.posX) * (x - currNode.posX) + (y - currNode.posY) * (y - currNode.posY);
@@ -19,8 +20,28 @@ function Content({
     }
 
     function drawEdge(Node1, Node2) {
-        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2 }]);
+        //make sure the first node in list is of smaller value
+        if(Node1.id >Node2.id){
+            let temp = Node1;
+            Node1 = Node2;
+            Node2 = temp;
+        }
+
+        //check if already present
+        let alreadyPresent = 0;
+        for (const currEdge of edgeList){
+            if(currEdge.nodeA.id===Node1.id && currEdge.nodeB.id===Node2.id ){
+                alreadyPresent = 1;
+                break;
+            }
+        }
+
+        if(alreadyPresent===1)return;
+        currEdgeCount++;
+
+        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: currEdgeCount }]);
         console.log("Edge drawn");
+        return;
     }
 
     const clickHandler = (e) => {
