@@ -6,7 +6,7 @@ function Sidebar({ currentState, setCurrentState }) {
     const addNodeButtHandler = (e) => {
         e.preventDefault();
         let butt = document.querySelector(".addNodeButt");
-        if(currentState==="creatingNode") {
+        if (currentState === "creatingNode") {
             setCurrentState("idle");
             butt.innerHTML = "Add Node";
             let cursor = document.querySelector(".cursor");
@@ -23,7 +23,7 @@ function Sidebar({ currentState, setCurrentState }) {
     const addEdgeButtHandler = (e) => {
         e.preventDefault();
         let butt = document.querySelector(".addEdgeButt");
-        if(currentState==="creatingEdge") {
+        if (currentState === "creatingEdge") {
             setCurrentState("idle");
             butt.innerHTML = "Add Edge";
         }

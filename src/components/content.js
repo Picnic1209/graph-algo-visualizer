@@ -10,17 +10,16 @@ function Content({
     setEdgeList,
 }) {
     let foundNode1 = -1;
-    let foundNode2 = -1;
 
     function isNear(currNode, x, y) {
-        let distance = (x-currNode.posX)*(x-currNode.posX) +  (y-currNode.posY)*(y-currNode.posY) ;
-        if(distance<=110) return 1;
+        let distance = (x - currNode.posX) * (x - currNode.posX) + (y - currNode.posY) * (y - currNode.posY);
+        if (distance <= 110) return 1;
         return 0;
     }
 
-    function  drawEdge(foundNode1, foundNode2){
+    function drawEdge(foundNode1, foundNode2) {
         console.log("starting to draw edge");
-            setEdgeList([... edgeList, {nodeA: foundNode1, nodeB: foundNode2}]);
+        setEdgeList([...edgeList, { nodeA: foundNode1, nodeB: foundNode2 }]);
     }
 
     const clickHandler = (e) => {
@@ -58,10 +57,8 @@ function Content({
                 if (foundNode1 === -1) {
                     foundNode1 = foundNode;
                 } else if (foundNode !== foundNode1) {
-                    foundNode2 = foundNode;
-                    drawEdge(foundNode1, foundNode2);
+                    drawEdge(foundNode1, foundNode);
                     foundNode1 = -1;
-                    foundNode2 = -1;
                 }
             }
         }

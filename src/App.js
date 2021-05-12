@@ -13,7 +13,7 @@ function App() {
         <Sidebar currentState={currentState} setCurrentState={setCurrentState} />
       </div>
       <div className="content">
-        <Content nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList = {setEdgeList}></Content>
+        <Content nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList={setEdgeList}></Content>
       </div>
     </div>
   );
