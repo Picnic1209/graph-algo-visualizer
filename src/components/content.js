@@ -1,5 +1,6 @@
 import "../App.css";
 import React from "react";
+import { Line } from 'react-lineto';
 
 function Content({
     currentState,
@@ -17,18 +18,20 @@ function Content({
         return 0;
     }
 
-    function drawEdge(foundNode1, foundNode2) {
-        setEdgeList([...edgeList, { nodeA: foundNode1, nodeB: foundNode2 }]);
+    function drawEdge(Node1, Node2) {
+        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2 }]);
+        console.log("Edge drawn");
     }
 
     const clickHandler = (e) => {
         console.log("clicked");
         if (currentState === "creatingNode") {
-            let x = e.clientX - 10;
-            let y = e.clientY - 10;
+            let x = e.clientX;
+            let y = e.clientY;
             setNodeList([...nodeList, { posX: x, posY: y, id: nodeList.length + 1 }]);
         }
         if (currentState === "creatingEdge") {
+            console.log("here");
             let x = e.clientX;
             let y = e.clientY;
 
@@ -70,7 +73,10 @@ function Content({
             onMouseMove={mouseMoveHandler}
         >
             {nodeList.map((node)=>
-            <div className="node" style={{top:node.posY, left:node.posX}}></div>
+            <div key={node.id} className="node" style={{top:node.posY-10, left:node.posX-10}}></div>
+            )}
+            {edgeList.map((edge)=>
+            <Line zIndex={-5} borderColor="black" borderWidth={2} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
             )}
             <div className="cursor"></div>
         </div>
