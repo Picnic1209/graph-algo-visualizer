@@ -11,17 +11,18 @@ function Content({
     edgeList,
     setEdgeList,
 }) {
+    //Global variables 
     let foundNode1 = -1;
-    let currEdgeCount = 0;
 
-
-    function isNear(currNode, x, y, radius) {
+    //IsNear() function. Returns true is both points are closer than the distance
+    function isNear(currNode, x, y, nearDistance) {
         let distance = (x - currNode.posX) * (x - currNode.posX) + (y - currNode.posY) * (y - currNode.posY);
-        if (distance <= radius) return 1;
+        if (distance <= nearDistance*nearDistance) return 1;
         return 0;
     }
 
-    function drawEdge(Node1, Node2) {
+    //Adds edge to edgeList
+    function addEdge(Node1, Node2) {
         //make sure the first node in list is of smaller value
         if(Node1.id >Node2.id){
             let temp = Node1;
@@ -30,27 +31,31 @@ function Content({
         }
 
         //check if already present
-        let alreadyPresent = 0;
+        let edgeAlreadyPresent = 0;
         for (const currEdge of edgeList){
             if(currEdge.nodeA.id===Node1.id && currEdge.nodeB.id===Node2.id ){
-                alreadyPresent = 1;
+                window.alert("Edge Already Present. Are you blind bruh??");
+                edgeAlreadyPresent = 1;
                 break;
             }
         }
 
-        if(alreadyPresent===1){
+        //If edge already present then return
+        if(edgeAlreadyPresent===1){
             return;
         }
 
-        currEdgeCount = currEdgeCount+1;
-
+        //if edge present then add it to the list
         setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: edgeList.length + 1}]);
         console.log("Edge drawn");
         return;
     }
 
+    
     const clickHandler = (e) => {
         console.log("clicked");
+
+        //Creating Node Mode
         if (currentState === "creatingNode") {
             let x = e.clientX;
             let y = e.clientY;
@@ -58,7 +63,7 @@ function Content({
             //check if it is too near to any existing node
             let nodeTooNear = 0;
             for (const currNode of nodeList) {
-                if (isNear(currNode, x, y, 2000)) {
+                if (isNear(currNode, x, y, 70)) {
                     nodeTooNear = 1;
                     window.alert("Nodes Too Close. Maintain Social Distancing!");
                     break;
@@ -67,6 +72,8 @@ function Content({
             if(nodeTooNear===1) return;
             setNodeList([...nodeList, { posX: x, posY: y, id: nodeList.length + 1 }]);
         }
+
+        //Creating Edge Mode
         if (currentState === "creatingEdge") {
             console.log("here");
             let x = e.clientX;
@@ -75,7 +82,7 @@ function Content({
             let found = 0;
             let foundNode;
             for (const currNode of nodeList) {
-                if (isNear(currNode, x, y,250)) {
+                if (isNear(currNode, x, y,20)) {
                     console.log(currNode.id);
                     found = 1;
                     foundNode = currNode;
@@ -86,13 +93,15 @@ function Content({
                 if (foundNode1 === -1) {
                     foundNode1 = foundNode;
                 } else if (foundNode !== foundNode1) {
-                    drawEdge(foundNode1, foundNode);
+                    addEdge(foundNode1, foundNode);
                     foundNode1 = -1;
                 }
             }
         }
     };
 
+    
+    // Mouse cursor Trail
     const mouseMoveHandler = (e) => {
         if (currentState === "creatingNode") {
             let cursor = document.querySelector(".cursor");
@@ -103,7 +112,9 @@ function Content({
         }
     };
 
+
     return (
+        //Main Body
         <div
             className="contentRoot"
             onClick={clickHandler}
