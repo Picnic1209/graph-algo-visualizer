@@ -61,8 +61,8 @@ function Content({
             let cursor = document.querySelector(".cursor");
             let x = e.clientX;
             let y = e.clientY;
-            cursor.style.left = x - 10 + "px";
-            cursor.style.top = y - 10 + "px";
+            cursor.style.left = x - 15 + "px";
+            cursor.style.top = y - 15 + "px";
         }
     };
 
@@ -73,10 +73,10 @@ function Content({
             onMouseMove={mouseMoveHandler}
         >
             {nodeList.map((node)=>
-            <div key={node.id} className="node" style={{top:node.posY-10, left:node.posX-10}}></div>
+            <div key={node.id} className="node" style={{top:node.posY-15, left:node.posX-15}}>{node.id}</div>
             )}
             {edgeList.map((edge)=>
-            <Line zIndex={-5} borderColor="black" borderWidth={2} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
+            <Line zIndex={-5} borderColor="black" borderWidth={3} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
             )}
             <div className="cursor"></div>
         </div>
