@@ -2,6 +2,7 @@ import "../App.css";
 import React from "react";
 import { Line } from 'react-lineto';
 
+
 function Content({
     currentState,
     setCurrentState,
@@ -13,9 +14,10 @@ function Content({
     let foundNode1 = -1;
     let currEdgeCount = 0;
 
-    function isNear(currNode, x, y) {
+
+    function isNear(currNode, x, y, radius) {
         let distance = (x - currNode.posX) * (x - currNode.posX) + (y - currNode.posY) * (y - currNode.posY);
-        if (distance <= 110) return 1;
+        if (distance <= radius) return 1;
         return 0;
     }
 
@@ -52,6 +54,17 @@ function Content({
         if (currentState === "creatingNode") {
             let x = e.clientX;
             let y = e.clientY;
+
+            //check if it is too near to any existing node
+            let nodeTooNear = 0;
+            for (const currNode of nodeList) {
+                if (isNear(currNode, x, y, 2000)) {
+                    nodeTooNear = 1;
+                    window.alert("Nodes Too Close. Maintain Social Distancing!");
+                    break;
+                }
+            }
+            if(nodeTooNear===1) return;
             setNodeList([...nodeList, { posX: x, posY: y, id: nodeList.length + 1 }]);
         }
         if (currentState === "creatingEdge") {
@@ -62,7 +75,7 @@ function Content({
             let found = 0;
             let foundNode;
             for (const currNode of nodeList) {
-                if (isNear(currNode, x, y)) {
+                if (isNear(currNode, x, y,250)) {
                     console.log(currNode.id);
                     found = 1;
                     foundNode = currNode;
