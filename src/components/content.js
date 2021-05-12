@@ -18,26 +18,17 @@ function Content({
     }
 
     function drawEdge(foundNode1, foundNode2) {
-        console.log("starting to draw edge");
         setEdgeList([...edgeList, { nodeA: foundNode1, nodeB: foundNode2 }]);
     }
 
     const clickHandler = (e) => {
         console.log("clicked");
         if (currentState === "creatingNode") {
-            console.log("clickedCreatingNode");
-            let x = e.clientX;
-            let y = e.clientY;
-            let div = document.createElement("div");
-            div.className = "node";
-            div.style.left = x - 10 + "px";
-            div.style.top = y - 10 + "px";
-            let cont = document.querySelector(".contentRoot");
-            cont.appendChild(div);
+            let x = e.clientX - 10;
+            let y = e.clientY - 10;
             setNodeList([...nodeList, { posX: x, posY: y, id: nodeList.length + 1 }]);
         }
         if (currentState === "creatingEdge") {
-            console.log("clickedCreatingEdge");
             let x = e.clientX;
             let y = e.clientY;
 
@@ -45,14 +36,12 @@ function Content({
             let foundNode;
             for (const currNode of nodeList) {
                 if (isNear(currNode, x, y)) {
-                    console.log("found!!!!!!!");
                     console.log(currNode.id);
                     found = 1;
                     foundNode = currNode;
                     break;
                 }
             }
-
             if (found === 1) {
                 if (foundNode1 === -1) {
                     foundNode1 = foundNode;
@@ -66,7 +55,6 @@ function Content({
 
     const mouseMoveHandler = (e) => {
         if (currentState === "creatingNode") {
-            console.log("moving");
             let cursor = document.querySelector(".cursor");
             let x = e.clientX;
             let y = e.clientY;
@@ -74,12 +62,16 @@ function Content({
             cursor.style.top = y - 10 + "px";
         }
     };
+
     return (
         <div
             className="contentRoot"
             onClick={clickHandler}
             onMouseMove={mouseMoveHandler}
         >
+            {nodeList.map((node)=>
+            <div className="node" style={{top:node.posY, left:node.posX}}></div>
+            )}
             <div className="cursor"></div>
         </div>
     );
