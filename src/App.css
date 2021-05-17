@@ -23,6 +23,7 @@
 .sidebarRoot{
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .content {
@@ -70,4 +71,28 @@
   position: absolute;
   color: black;
   font-size: 24px;
+}
+
+.addNodeButt, .addEdgeButt{
+  width: 60%;
+  margin: 10px;
+  align-items: center;
+}
+
+.edgeWeightForm{
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.addEdgeTextSpace{
+  width: 100%;
+}
+.addEdgeTextButton{
+  width: 85.6%;
+  align-items: center;
+}
+
+.sideBarText{
+  font-size: 13px;
 }
