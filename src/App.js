@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <div className="sidebar">
-        <Sidebar currentState={currentState} setCurrentState={setCurrentState} />
+        <Sidebar nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList={setEdgeList} />
       </div>
       <div className="content">
         <Content nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList={setEdgeList}></Content>
