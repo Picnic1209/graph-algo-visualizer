@@ -46,7 +46,7 @@ function Content({
         }
 
         //if edge present then add it to the list
-        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: edgeList.length + 1}]);
+        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: edgeList.length + 1, weight: 1}]);
         console.log("Edge drawn");
         return;
     }
@@ -123,9 +123,41 @@ function Content({
             {nodeList.map((node)=>
             <div key={node.id} className="node" style={{top:node.posY-15, left:node.posX-15}}>{node.id}</div>
             )}
+
             {edgeList.map((edge)=>
             <Line key={edge.id} zIndex={-5} borderColor="black" borderWidth={3} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
             )}
+
+            {edgeList.map((edge)=>{
+                let xpos = (edge.nodeA.posX + edge.nodeB.posX)/2;
+                let ypos = (edge.nodeA.posY + edge.nodeB.posY)/2;
+                let offsetX = 0, offsetY = 0;
+                if(Math.abs(edge.nodeA.posX - edge.nodeB.posX)<30){
+                    offsetX = 10;
+                }
+
+                else if(Math.abs(edge.nodeA.posY - edge.nodeB.posY)<30){
+                    offsetY = -30;
+                }
+
+                else{
+                    let slope = (edge.nodeA.posY - edge.nodeB.posY)/((edge.nodeA.posX - edge.nodeB.posX));
+                    if(slope<0){
+                        offsetY = -25;
+                        offsetX = -15;
+                    }
+                    else{
+                        offsetY = -25;
+                    }
+                }
+
+
+                
+
+                return <div key={edge.id} className= "edgeWeight" style={{top:ypos + offsetY, left: xpos + offsetX}}> {edge.weight}</div>
+                }
+            )}
+
             <div className="cursor"></div>
         </div>
     );

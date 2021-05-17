@@ -8,6 +8,7 @@
 
 .App {
   display: flex;
+  flex-direction: row;
 }
 
 .sidebar {
@@ -16,6 +17,12 @@
   height: 100vh;
   top: 0;
   bottom: 0;
+  
+}
+
+.sidebarRoot{
+  display: flex;
+  flex-direction: column;
 }
 
 .content {
@@ -57,4 +64,10 @@
   border-radius: 50%;
   pointer-events: none;
   display: none;
+}
+
+.edgeWeight{
+  position: absolute;
+  color: black;
+  font-size: 24px;
 }
