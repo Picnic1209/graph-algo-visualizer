@@ -135,16 +135,17 @@ function Sidebar({
         Add Edge{" "}
       </button>
 
-      {/* add text */}
-      <form>
-        <input
+      <div className="sideBarText"> OR </div>
+      <div className="sideBarText"> Add Edge by text </div>
+
+      <form className="edgeWeightForm">
+        <input className = "addEdgeTextSpace"
           value={edgeText}
           onChange={edgeTextHandler}
           type="text"
-          className="edgetext"
         />
-        <button className="addEdgeText" onClick={edgeTextAddHandler}>
-          <i className="edgeTextSubmitButton">Submit</i>
+        <button className="addEdgeTextButton" onClick={edgeTextAddHandler}>
+          <i>Add Edge</i>
         </button>
       </form>
     </div>
