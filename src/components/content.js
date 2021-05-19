@@ -10,6 +10,8 @@ function Content({
     setNodeList,
     edgeList,
     setEdgeList,
+    colorEdgeList,
+    setColorEdgeList
 }) {
     //Global variables 
     let foundNode1 = -1;
@@ -17,14 +19,14 @@ function Content({
     //IsNear() function. Returns true is both points are closer than the distance
     function isNear(currNode, x, y, nearDistance) {
         let distance = (x - currNode.posX) * (x - currNode.posX) + (y - currNode.posY) * (y - currNode.posY);
-        if (distance <= nearDistance*nearDistance) return 1;
+        if (distance <= nearDistance * nearDistance) return 1;
         return 0;
     }
 
     //Adds edge to edgeList
     function addEdge(Node1, Node2) {
         //make sure the first node in list is of smaller value
-        if(Node1.id >Node2.id){
+        if (Node1.id > Node2.id) {
             let temp = Node1;
             Node1 = Node2;
             Node2 = temp;
@@ -32,8 +34,8 @@ function Content({
 
         //check if already present
         let edgeAlreadyPresent = 0;
-        for (const currEdge of edgeList){
-            if(currEdge.nodeA.id===Node1.id && currEdge.nodeB.id===Node2.id ){
+        for (const currEdge of edgeList) {
+            if (currEdge.nodeA.id === Node1.id && currEdge.nodeB.id === Node2.id) {
                 window.alert("Edge Already Present. Are you blind bruh??");
                 edgeAlreadyPresent = 1;
                 break;
@@ -41,17 +43,17 @@ function Content({
         }
 
         //If edge already present then return
-        if(edgeAlreadyPresent===1){
+        if (edgeAlreadyPresent === 1) {
             return;
         }
 
         //if edge present then add it to the list
-        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: edgeList.length + 1, weight: 1}]);
+        setEdgeList([...edgeList, { nodeA: Node1, nodeB: Node2, id: edgeList.length + 1, weight: 1 }]);
         console.log("Edge drawn");
         return;
     }
 
-    
+
     const clickHandler = (e) => {
         console.log("clicked");
 
@@ -69,7 +71,7 @@ function Content({
                     break;
                 }
             }
-            if(nodeTooNear===1) return;
+            if (nodeTooNear === 1) return;
             setNodeList([...nodeList, { posX: x, posY: y, id: nodeList.length + 1 }]);
         }
 
@@ -82,7 +84,7 @@ function Content({
             let found = 0;
             let foundNode;
             for (const currNode of nodeList) {
-                if (isNear(currNode, x, y,20)) {
+                if (isNear(currNode, x, y, 20)) {
                     console.log(currNode.id);
                     found = 1;
                     foundNode = currNode;
@@ -100,7 +102,6 @@ function Content({
         }
     };
 
-    
     // Mouse cursor Trail
     const mouseMoveHandler = (e) => {
         if (currentState === "creatingNode") {
@@ -112,7 +113,6 @@ function Content({
         }
     };
 
-
     return (
         //Main Body
         <div
@@ -120,44 +120,43 @@ function Content({
             onClick={clickHandler}
             onMouseMove={mouseMoveHandler}
         >
-            {nodeList.map((node)=>
-            <div key={node.id} className="node" style={{top:node.posY-15, left:node.posX-15}}>{node.id}</div>
+            {nodeList.map((node) =>
+                <div key={node.id} className="node" style={{ top: node.posY - 15, left: node.posX - 15 }}>{node.id}</div>
             )}
 
-            {edgeList.map((edge)=>
-            <Line key={edge.id} zIndex={-5} borderColor="black" borderWidth={3} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
+            {edgeList.map((edge) =>
+                <Line key={edge.id} zIndex={-5} borderColor="black" borderWidth={3} x0={edge.nodeA.posX} y0={edge.nodeA.posY} x1={edge.nodeB.posX} y1={edge.nodeB.posY} />
             )}
 
-            {edgeList.map((edge)=>{
-                let xpos = (edge.nodeA.posX + edge.nodeB.posX)/2;
-                let ypos = (edge.nodeA.posY + edge.nodeB.posY)/2;
+            {edgeList.map((edge) => {
+                let xpos = (edge.nodeA.posX + edge.nodeB.posX) / 2;
+                let ypos = (edge.nodeA.posY + edge.nodeB.posY) / 2;
                 let offsetX = 0, offsetY = 0;
-                if(Math.abs(edge.nodeA.posX - edge.nodeB.posX)<30){
+                if (Math.abs(edge.nodeA.posX - edge.nodeB.posX) < 30) {
                     offsetX = 10;
                 }
 
-                else if(Math.abs(edge.nodeA.posY - edge.nodeB.posY)<30){
+                else if (Math.abs(edge.nodeA.posY - edge.nodeB.posY) < 30) {
                     offsetY = -30;
                 }
 
-                else{
-                    let slope = (edge.nodeA.posY - edge.nodeB.posY)/((edge.nodeA.posX - edge.nodeB.posX));
-                    if(slope<0){
+                else {
+                    let slope = (edge.nodeA.posY - edge.nodeB.posY) / ((edge.nodeA.posX - edge.nodeB.posX));
+                    if (slope < 0) {
                         offsetY = -25;
                         offsetX = -15;
                     }
-                    else{
+                    else {
                         offsetY = -25;
                     }
                 }
 
-
-                
-
-                return <div key={edge.id} className= "edgeWeight" style={{top:ypos + offsetY, left: xpos + offsetX}}> {edge.weight}</div>
-                }
+                return <div key={edge.id} className="edgeWeight" style={{ top: ypos + offsetY, left: xpos + offsetX }}> {edge.weight}</div>
+            }
             )}
-
+            {colorEdgeList.map((edge) =>
+                <Line key={edge.edge.id} zIndex={-4} borderColor={edge.color} borderWidth={5} x0={edge.edge.nodeA.posX} y0={edge.edge.nodeA.posY} x1={edge.edge.nodeB.posX} y1={edge.edge.nodeB.posY} />
+            )}
             <div className="cursor"></div>
         </div>
     );

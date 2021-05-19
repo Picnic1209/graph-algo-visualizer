@@ -10,6 +10,8 @@ function Sidebar({
   setEdgeList,
   edgeText,
   setEdgeText,
+  colorEdgeList,
+  setColorEdgeList
 }) {
   const edgeTextHandler = (e) => {
     console.log(e.target.value);
@@ -124,6 +126,36 @@ function Sidebar({
       butt.innerHTML = "Stop Adding Edge";
     }
   };
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function DFS(current, parent) {
+    console.log(current);
+    for (const currEdge of edgeList) {
+      if (currEdge.nodeA.id === current || currEdge.nodeB.id === current) {
+        let other = (currEdge.nodeA.id === current) ? currEdge.nodeB.id : currEdge.nodeA.id;
+        if (other === parent) continue;
+        console.log(colorEdgeList);
+        setColorEdgeList([...colorEdgeList, { edge: currEdge, color: "#f55c47" }]);
+        await sleep(1000);
+        await DFS(other, current);
+        await sleep(1000);
+        // let newColorEdgeList = colorEdgeList;
+        // setColorEdgeList(newColorEdgeList.filter(e => e.edge !== currEdge));
+        await sleep(1000);
+      }
+    }
+  }
+
+  const dfsHandler = (e) => {
+    e.preventDefault();
+    setCurrentState("DFS");
+    if (edgeList.length === 0) return;
+    DFS(1, 0);
+  }
+
   return (
     <div className="sidebarRoot">
       <button className="addNodeButt" onClick={addNodeButtHandler}>
@@ -139,7 +171,7 @@ function Sidebar({
       <div className="sideBarText"> Add Edge by text </div>
 
       <form className="edgeWeightForm">
-        <input className = "addEdgeTextSpace"
+        <input className="addEdgeTextSpace"
           value={edgeText}
           onChange={edgeTextHandler}
           type="text"
@@ -148,6 +180,9 @@ function Sidebar({
           <i>Add Edge</i>
         </button>
       </form>
+      <button className="dfsButton" onClick={dfsHandler}>
+        Start DFS
+      </button>
     </div>
   );
 }
