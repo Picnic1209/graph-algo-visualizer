@@ -156,6 +156,66 @@ function Sidebar({
     DFS(1, 0);
   }
 
+
+  function numToColor(depth){
+    depth = depth%6;
+    if(depth===0) return "red";
+    if(depth===1) return "blue";
+    if(depth===2) return "green";
+    if(depth===3) return "brown";
+    if(depth===4) return "pink";
+    return "yellow";
+  }
+
+  async function BFS(current, parent) {
+    //console.log(current);
+
+    let queue = [];
+    let visited = [];
+    let level = [];
+    for(let i=0;i<=nodeList.length;i++){
+      visited[i] = 0;
+      level[i] = 0;
+    }
+    //push current element in nodelist with weigth assigned
+    queue.push(current);
+    visited[current] = 1;
+    let newColorEdgeList = [];
+    console.log(queue);
+
+    //iterate over the queue
+    while(queue.length!==0){
+      let top = queue.shift();
+
+      //find edges connecting to current
+      for (const currEdge of edgeList) {
+        if (currEdge.nodeA.id === top || currEdge.nodeB.id === top) {
+          let other = (currEdge.nodeA.id === top) ? currEdge.nodeB.id : currEdge.nodeA.id;
+          if (visited[other]===1) continue;
+          newColorEdgeList.push({edge: currEdge, color : numToColor( level[top]) });
+          queue.push(other);
+          level[other] = level[top]+1;
+          visited[other] = 1;
+        }
+      }
+    }
+
+    console.log(newColorEdgeList);
+    setColorEdgeList(newColorEdgeList);
+
+
+
+  }
+
+  const bfsHandler = (e) => {
+    console.log("BFS Started");
+    e.preventDefault();
+    setColorEdgeList([]);
+    setCurrentState("BFS");
+    if (edgeList.length === 0) return;
+    BFS(1, 0);
+  }
+
   return (
     <div className="sidebarRoot">
       <button className="addNodeButt" onClick={addNodeButtHandler}>
@@ -182,6 +242,9 @@ function Sidebar({
       </form>
       <button className="dfsButton" onClick={dfsHandler}>
         Start DFS
+      </button>
+      <button className="bfsButton" onClick={bfsHandler}>
+        Start BFS
       </button>
     </div>
   );
