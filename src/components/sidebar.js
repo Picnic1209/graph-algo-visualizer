@@ -213,8 +213,6 @@ function Sidebar({
     console.log(newColorEdgeList);
     setColorEdgeList(newColorEdgeList);
 
-
-
   }
 
   const bfsHandler = (e) => {
@@ -224,6 +222,15 @@ function Sidebar({
     setCurrentState("BFS");
     if (edgeList.length === 0) return;
     BFS(1, 0);
+  }
+
+  const resetHandler = (e) => {
+    e.preventDefault();
+    setColorEdgeList([]);
+    setCurrentState("idle");
+    setNodeList([]);
+    setEdgeList([]);
+    setEdgeText("");
   }
 
   return (
@@ -255,6 +262,9 @@ function Sidebar({
       </button>
       <button className="bfsButton" onClick={bfsHandler}>
         Start BFS
+      </button>
+      <button className="resetButton" onClick={resetHandler}>
+        Reset
       </button>
     </div>
   );
