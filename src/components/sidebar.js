@@ -173,32 +173,42 @@ function Sidebar({
     let queue = [];
     let visited = [];
     let level = [];
+    let newColorEdgeList = [];
     for(let i=0;i<=nodeList.length;i++){
       visited[i] = 0;
       level[i] = 0;
     }
-    //push current element in nodelist with weigth assigned
-    queue.push(current);
-    visited[current] = 1;
-    let newColorEdgeList = [];
-    console.log(queue);
+    
+    //for every unvisited node, do BFS
+    for(let i=1;i<=nodeList.length;i++){
+      if(visited[i]===0){
 
-    //iterate over the queue
-    while(queue.length!==0){
-      let top = queue.shift();
+        //push current element in nodelist with weigth assigned
+        queue.push(i);
+        visited[i] = 1;
+        
+        console.log(queue);
 
-      //find edges connecting to current
-      for (const currEdge of edgeList) {
-        if (currEdge.nodeA.id === top || currEdge.nodeB.id === top) {
-          let other = (currEdge.nodeA.id === top) ? currEdge.nodeB.id : currEdge.nodeA.id;
-          if (visited[other]===1) continue;
-          newColorEdgeList.push({edge: currEdge, color : numToColor( level[top]) });
-          queue.push(other);
-          level[other] = level[top]+1;
-          visited[other] = 1;
+        //iterate over the queue
+        while(queue.length!==0){
+          let top = queue.shift();
+
+          //find edges connecting to current
+          for (const currEdge of edgeList) {
+            if (currEdge.nodeA.id === top || currEdge.nodeB.id === top) {
+              let other = (currEdge.nodeA.id === top) ? currEdge.nodeB.id : currEdge.nodeA.id;
+              if (visited[other]===1) continue;
+              newColorEdgeList.push({edge: currEdge, color : numToColor( level[top]) });
+              queue.push(other);
+              level[other] = level[top]+1;
+              visited[other] = 1;
+            }
+          }
         }
       }
     }
+
+    //check if there are any unvisited nodes
 
     console.log(newColorEdgeList);
     setColorEdgeList(newColorEdgeList);
