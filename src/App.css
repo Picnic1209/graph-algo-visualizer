@@ -12,7 +12,7 @@
 }
 
 .sidebar {
-  background-color: blueviolet;
+  background-color: rgb(4, 236, 167);
   width: 200px;
   height: 100vh;
   top: 0;
@@ -79,9 +79,18 @@
   font-size: 16px;
 }
 
-.addNodeButt, .addEdgeButt{
+#addNodeButt, #addEdgeButt{
+
   width: 60%;
   margin: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.buttons{
+  width: 60%;
+  margin: 10px;
+  margin-bottom: 15px;
   align-items: center;
 }
 

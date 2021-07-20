@@ -1,5 +1,6 @@
 import "../App.css";
 import React from "react";
+import Button from 'react-bootstrap/Button';
 
 function Sidebar({
   currentState,
@@ -102,7 +103,7 @@ function Sidebar({
 
   const addNodeButtHandler = (e) => {
     e.preventDefault();
-    let butt = document.querySelector(".addNodeButt");
+    let butt = document.querySelector("#addNodeButt");
     if (currentState === "creatingNode") {
       setCurrentState("idle");
       butt.innerHTML = "Add Node";
@@ -118,7 +119,7 @@ function Sidebar({
 
   const addEdgeButtHandler = (e) => {
     e.preventDefault();
-    let butt = document.querySelector(".addEdgeButt");
+    let butt = document.querySelector("#addEdgeButt");
     if (currentState === "creatingEdge") {
       setCurrentState("idle");
       butt.innerHTML = "Add Edge";
@@ -395,42 +396,42 @@ function Sidebar({
 
   return (
     <div className="sidebarRoot">
-      <button className="addNodeButt" onClick={addNodeButtHandler}>
+      <button type="button" class="btn btn-light btn-sm" id="addNodeButt" onClick={addNodeButtHandler}>
         {" "}
         Add Node{" "}
       </button>
-      <button className="addEdgeButt" onClick={addEdgeButtHandler}>
+      <button type="button" class="btn btn-light btn-sm" id="addEdgeButt" onClick={addEdgeButtHandler}>
         {" "}
         Add Edge{" "}
       </button>
 
-      <div className="sideBarText"> OR </div>
-      <div className="sideBarText"> Add Edge by text </div>
+      <div className="sideBarText font-weight-light"> OR </div>
+      <div className="sideBarText font-weight-light"> Add Edge by text </div>
 
       <form className="edgeWeightForm">
         <input
-          className="addEdgeTextSpace"
+          className="form-control addEdgeTextSpace"
           value={edgeText}
           onChange={edgeTextHandler}
           type="text"
         />
-        <button className="addEdgeTextButton" onClick={edgeTextAddHandler}>
+        <button class="btn btn-light btn-sm buttons" onClick={edgeTextAddHandler}>
           <i>Add Edge</i>
         </button>
       </form>
-      <button className="dfsButton" onClick={dfsHandler}>
+      <button type="button" class="btn btn-light btn-sm buttons" onClick={dfsHandler}>
         Start DFS
       </button>
-      <button className="bfsButton" onClick={bfsHandler}>
+      <button type="button" class="btn btn-light btn-sm buttons" onClick={bfsHandler}>
         Start BFS
       </button>
-      <button className="MSTButton" onClick={MSTHandler}>
+      <button type="button" class="btn btn-light btn-sm buttons" onClick={MSTHandler}>
         Get MST
       </button>
-      <button className="SSSPButton" onClick={SSSPHandler}>
+      <button type="button" class="btn btn-light btn-sm buttons" onClick={SSSPHandler}>
         Get Shortest Path
       </button>
-      <button className="resetButton" onClick={resetHandler}>
+      <button type="button" class="btn btn-light btn-smbuttons" onClick={resetHandler}>
         Reset
       </button>
     </div>
