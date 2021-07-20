@@ -73,6 +73,12 @@
   font-size: 24px;
 }
 
+.nodeDistance{
+  position: absolute;
+  color: rgb(185, 16, 16);
+  font-size: 16px;
+}
+
 .addNodeButt, .addEdgeButt{
   width: 60%;
   margin: 10px;

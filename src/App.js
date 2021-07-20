@@ -9,13 +9,14 @@ function App() {
   const [edgeList, setEdgeList] = useState([]);
   const [edgeText, setEdgeText] = useState("");
   const [colorEdgeList, setColorEdgeList] = useState([]);
+  const [nodeDistanceList, setNodeDistanceList] = useState([]);
   return (
     <div className="App">
       <div className="sidebar">
-        <Sidebar colorEdgeList={colorEdgeList} setColorEdgeList={setColorEdgeList} edgeText={edgeText} setEdgeText={setEdgeText} nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList={setEdgeList} />
+        <Sidebar nodeDistanceList={nodeDistanceList} setNodeDistanceList={setNodeDistanceList} colorEdgeList={colorEdgeList} setColorEdgeList={setColorEdgeList} edgeText={edgeText} setEdgeText={setEdgeText} nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList={setEdgeList} />
       </div>
       <div className="content">
-        <Content  colorEdgeList={colorEdgeList} setColorEdgeList={setColorEdgeList} nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList={setEdgeList}></Content>
+        <Content nodeDistanceList={nodeDistanceList} setNodeDistanceList={setNodeDistanceList} colorEdgeList={colorEdgeList} setColorEdgeList={setColorEdgeList} nodeList={nodeList} setNodeList={setNodeList} currentState={currentState} setCurrentState={setCurrentState} edgeList={edgeList} setEdgeList={setEdgeList}></Content>
       </div>
     </div>
   );

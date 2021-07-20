@@ -11,10 +11,11 @@ function Sidebar({
   edgeText,
   setEdgeText,
   colorEdgeList,
-  setColorEdgeList
+  setColorEdgeList,
+  nodeDistanceList,
+  setNodeDistanceList
 }) {
   const edgeTextHandler = (e) => {
-    console.log(e.target.value);
     setEdgeText(e.target.value);
   };
 
@@ -128,17 +129,20 @@ function Sidebar({
   };
 
   function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   async function DFS(current, parent) {
     console.log(current);
     for (const currEdge of edgeList) {
       if (currEdge.nodeA.id === current || currEdge.nodeB.id === current) {
-        let other = (currEdge.nodeA.id === current) ? currEdge.nodeB.id : currEdge.nodeA.id;
+        let other =
+          currEdge.nodeA.id === current ? currEdge.nodeB.id : currEdge.nodeA.id;
         if (other === parent) continue;
-        console.log(colorEdgeList);
-        setColorEdgeList([...colorEdgeList, { edge: currEdge, color: "#f55c47" }]);
+        setColorEdgeList([
+          ...colorEdgeList,
+          { edge: currEdge, color: "#f55c47" },
+        ]);
         await sleep(1000);
         await DFS(other, current);
         await sleep(1000);
@@ -154,16 +158,15 @@ function Sidebar({
     setCurrentState("DFS");
     if (edgeList.length === 0) return;
     DFS(1, 0);
-  }
+  };
 
-
-  function numToColor(depth){
-    depth = depth%6;
-    if(depth===0) return "red";
-    if(depth===1) return "blue";
-    if(depth===2) return "green";
-    if(depth===3) return "brown";
-    if(depth===4) return "pink";
+  function numToColor(depth) {
+    depth = depth % 6;
+    if (depth === 0) return "red";
+    if (depth === 1) return "blue";
+    if (depth === 2) return "green";
+    if (depth === 3) return "brown";
+    if (depth === 4) return "pink";
     return "yellow";
   }
 
@@ -174,33 +177,36 @@ function Sidebar({
     let visited = [];
     let level = [];
     let newColorEdgeList = [];
-    for(let i=0;i<=nodeList.length;i++){
+    for (let i = 0; i <= nodeList.length; i++) {
       visited[i] = 0;
       level[i] = 0;
     }
-    
-    //for every unvisited node, do BFS
-    for(let i=1;i<=nodeList.length;i++){
-      if(visited[i]===0){
 
+    //for every unvisited node, do BFS
+    for (let i = 1; i <= nodeList.length; i++) {
+      if (visited[i] === 0) {
         //push current element in nodelist with weigth assigned
         queue.push(i);
         visited[i] = 1;
-        
-        console.log(queue);
 
         //iterate over the queue
-        while(queue.length!==0){
+        while (queue.length !== 0) {
           let top = queue.shift();
 
           //find edges connecting to current
           for (const currEdge of edgeList) {
             if (currEdge.nodeA.id === top || currEdge.nodeB.id === top) {
-              let other = (currEdge.nodeA.id === top) ? currEdge.nodeB.id : currEdge.nodeA.id;
-              if (visited[other]===1) continue;
-              newColorEdgeList.push({edge: currEdge, color : numToColor( level[top]) });
+              let other =
+                currEdge.nodeA.id === top
+                  ? currEdge.nodeB.id
+                  : currEdge.nodeA.id;
+              if (visited[other] === 1) continue;
+              newColorEdgeList.push({
+                edge: currEdge,
+                color: numToColor(level[top]),
+              });
               queue.push(other);
-              level[other] = level[top]+1;
+              level[other] = level[top] + 1;
               visited[other] = 1;
             }
           }
@@ -210,10 +216,8 @@ function Sidebar({
 
     //check if there are any unvisited nodes
 
-    console.log(newColorEdgeList);
     setColorEdgeList(newColorEdgeList);
     newColorEdgeList = [];
-
   }
 
   const bfsHandler = (e) => {
@@ -223,7 +227,7 @@ function Sidebar({
     setCurrentState("BFS");
     if (edgeList.length === 0) return;
     BFS(1, 0);
-  }
+  };
 
   const resetHandler = (e) => {
     e.preventDefault();
@@ -231,8 +235,9 @@ function Sidebar({
     setCurrentState("idle");
     setNodeList([]);
     setEdgeList([]);
+    setNodeDistanceList([]);
     setEdgeText("");
-  }
+  };
 
   //MST
   async function MST() {
@@ -242,35 +247,35 @@ function Sidebar({
 
     //DSU
     let nodeListSize = nodeList.length;
-    let parent = [], rank = [];
-    for(let i=1;i<=nodeListSize;i++){
+    let parent = [],
+      rank = [];
+    for (let i = 1; i <= nodeListSize; i++) {
       parent[i] = i;
       rank[i] = 1;
     }
 
-    function findParent(thisNode){
-      if(parent[thisNode]==thisNode)return thisNode;
-      return parent[thisNode] = findParent(parent[thisNode]);
+    function findParent(thisNode) {
+      if (parent[thisNode] === thisNode) return thisNode;
+      return (parent[thisNode] = findParent(parent[thisNode]));
     }
 
-    function union(n1, n2){
+    function union(n1, n2) {
       let parentn1 = findParent(n1);
       let parentn2 = findParent(n2);
-      if(parentn1==parentn2)return;
+      if (parentn1 === parentn2) return;
 
-      if(rank[parentn1]>rank[parentn2]){
+      if (rank[parentn1] > rank[parentn2]) {
         parent[n2] = n1;
-        rank[n1]+=rank[n2];
-      }
-      else{
+        rank[n1] += rank[n2];
+      } else {
         parent[n1] = n2;
-        rank[n2]+=rank[n1];
+        rank[n2] += rank[n1];
       }
       return;
     }
 
     //sort in decreasing order
-    edgeList.sort(function(x, y) {
+    edgeList.sort(function (x, y) {
       if (x.weight < y.weight) {
         return -1;
       }
@@ -281,35 +286,112 @@ function Sidebar({
     });
 
     // edgeList
-    edgeList.forEach(currEdge => {
-        //console.log(element);
-        if(findParent(currEdge.nodeA.id)!=findParent(currEdge.nodeB.id)){
-          newColorEdgeList.push({edge: currEdge, color : numToColor(3) });
-          union(currEdge.nodeA.id,currEdge.nodeB.id);
-        }
+    edgeList.forEach((currEdge) => {
+      //console.log(element);
+      if (findParent(currEdge.nodeA.id) !== findParent(currEdge.nodeB.id)) {
+        newColorEdgeList.push({ edge: currEdge, color: numToColor(3) });
+        union(currEdge.nodeA.id, currEdge.nodeB.id);
+      }
     });
-   
+
     //check if there are any unvisited nodes
 
     console.log(newColorEdgeList);
     setColorEdgeList(newColorEdgeList);
     newColorEdgeList = [];
-
   }
 
+  function SSSP() {
+    console.log("idharrr");
+    const INT_MAX = 1000;
 
+    let newColorEdgeList = [];
+
+    let nodeListSize = nodeList.length;
+
+    let distance = [];
+    let disNode = [];
+
+    for (let i = 1; i <= nodeListSize; i++) {
+      distance[i] = [INT_MAX, 0];
+      disNode.push(i);
+    }
+
+    distance[1] = [0, 0];
+
+    let cnt = 0;
+    while (cnt++ < nodeListSize) {
+      let currNode = 0,
+        currDistant = INT_MAX;
+      disNode.forEach((thisnode) => {
+        if (distance[thisnode][0] <= currDistant) {
+          currNode = thisnode;
+          currDistant = distance[thisnode][0];
+        }
+      });
+
+      disNode = disNode.filter((value) => {
+        return value !== currNode;
+      });
+
+      for (const currEdge of edgeList) {
+        if (currEdge.nodeA.id === currNode || currEdge.nodeB.id === currNode) {
+          let other =
+            currEdge.nodeA.id === currNode
+              ? currEdge.nodeB.id
+              : currEdge.nodeA.id;
+          if (
+            distance[other][0] >
+            parseInt(distance[currNode][0] + parseInt(currEdge.weight))
+          ) {
+            distance[other][0] = parseInt(
+              distance[currNode][0] + parseInt(currEdge.weight)
+            );
+            distance[other][1] = currEdge;
+          }
+        }
+      }
+    }
+
+    for (let i = 1; i <= nodeListSize; i++) {
+      if (distance[i][1] !== 0) {
+        newColorEdgeList.push({ edge: distance[i][1], color: numToColor(3) });
+      }
+    }
+
+    let newNodeDistanceList = [];
+
+    nodeList.forEach(thisnode => {
+        newNodeDistanceList.push({node: thisnode, distance: distance[thisnode.id][0]});
+    });
+
+
+    //check if there are any unvisited nodes
+
+    console.log(newColorEdgeList);
+    setColorEdgeList(newColorEdgeList);
+    setNodeDistanceList(newNodeDistanceList);
+    console.log(newNodeDistanceList);
+    newNodeDistanceList = [];
+    newColorEdgeList = [];
+  }
 
   const MSTHandler = (e) => {
-    console.log("MST Started");
     e.preventDefault();
     setColorEdgeList([]);
     setCurrentState("MST");
     if (edgeList.length === 0) return;
     MST();
-  }
+  };
 
-
-
+  const SSSPHandler = (e) => {
+    console.log("Shortest Path Started");
+    e.preventDefault();
+    setColorEdgeList([]);
+    setCurrentState("SSSP");
+    if (edgeList.length === 0) return;
+    SSSP();
+  };
 
   return (
     <div className="sidebarRoot">
@@ -326,7 +408,8 @@ function Sidebar({
       <div className="sideBarText"> Add Edge by text </div>
 
       <form className="edgeWeightForm">
-        <input className="addEdgeTextSpace"
+        <input
+          className="addEdgeTextSpace"
           value={edgeText}
           onChange={edgeTextHandler}
           type="text"
@@ -343,6 +426,9 @@ function Sidebar({
       </button>
       <button className="MSTButton" onClick={MSTHandler}>
         Get MST
+      </button>
+      <button className="SSSPButton" onClick={SSSPHandler}>
+        Get Shortest Path
       </button>
       <button className="resetButton" onClick={resetHandler}>
         Reset
