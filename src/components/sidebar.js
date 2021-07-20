@@ -212,11 +212,12 @@ function Sidebar({
 
     console.log(newColorEdgeList);
     setColorEdgeList(newColorEdgeList);
+    newColorEdgeList = [];
 
   }
 
   const bfsHandler = (e) => {
-    console.log("BFS Started");
+    //console.log("BFS Started");
     e.preventDefault();
     setColorEdgeList([]);
     setCurrentState("BFS");
@@ -232,6 +233,83 @@ function Sidebar({
     setEdgeList([]);
     setEdgeText("");
   }
+
+  //MST
+  async function MST() {
+    //console.log(current);
+
+    let newColorEdgeList = [];
+
+    //DSU
+    let nodeListSize = nodeList.length;
+    let parent = [], rank = [];
+    for(let i=1;i<=nodeListSize;i++){
+      parent[i] = i;
+      rank[i] = 1;
+    }
+
+    function findParent(thisNode){
+      if(parent[thisNode]==thisNode)return thisNode;
+      return parent[thisNode] = findParent(parent[thisNode]);
+    }
+
+    function union(n1, n2){
+      let parentn1 = findParent(n1);
+      let parentn2 = findParent(n2);
+      if(parentn1==parentn2)return;
+
+      if(rank[parentn1]>rank[parentn2]){
+        parent[n2] = n1;
+        rank[n1]+=rank[n2];
+      }
+      else{
+        parent[n1] = n2;
+        rank[n2]+=rank[n1];
+      }
+      return;
+    }
+
+    //sort in decreasing order
+    edgeList.sort(function(x, y) {
+      if (x.weight < y.weight) {
+        return -1;
+      }
+      if (x.weight > y.weight) {
+        return 1;
+      }
+      return 0;
+    });
+
+    // edgeList
+    edgeList.forEach(currEdge => {
+        //console.log(element);
+        if(findParent(currEdge.nodeA.id)!=findParent(currEdge.nodeB.id)){
+          newColorEdgeList.push({edge: currEdge, color : numToColor(3) });
+          union(currEdge.nodeA.id,currEdge.nodeB.id);
+        }
+    });
+   
+    //check if there are any unvisited nodes
+
+    console.log(newColorEdgeList);
+    setColorEdgeList(newColorEdgeList);
+    newColorEdgeList = [];
+
+  }
+
+
+
+  const MSTHandler = (e) => {
+    console.log("MST Started");
+    e.preventDefault();
+    setColorEdgeList([]);
+    setCurrentState("MST");
+    if (edgeList.length === 0) return;
+    MST();
+  }
+
+
+
 
   return (
     <div className="sidebarRoot">
@@ -262,6 +340,9 @@ function Sidebar({
       </button>
       <button className="bfsButton" onClick={bfsHandler}>
         Start BFS
+      </button>
+      <button className="MSTButton" onClick={MSTHandler}>
+        Get MST
       </button>
       <button className="resetButton" onClick={resetHandler}>
         Reset
